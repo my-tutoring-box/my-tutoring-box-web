@@ -29,6 +29,7 @@ export function LoginForm({
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="m@example.com"
                   required
                 />
@@ -37,7 +38,7 @@ export function LoginForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">비밀번호</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" name="password" required />
               </div>
               <Button type="submit" className="w-full bg-teacher">
                 로그인

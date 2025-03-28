@@ -15,6 +15,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useUserStore } from "@/app/stores/user-store";
+import { register } from "@/app/lib/data/auth.action";
 
 export function InputCodeForm({
   className,
@@ -32,13 +33,15 @@ export function InputCodeForm({
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form action={register}>
+            <input type="hidden" name="role" value={role ?? ""} />
             <div className="flex flex-row gap-2">
               <InputOTP
                 maxLength={6}
                 pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
                 id="code"
                 type="code"
+                name="code"
                 required
               >
                 <InputOTPGroup>

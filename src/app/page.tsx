@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "./stores/user-store";
+import { setCookies } from "./lib/data/auth.action";
 
 export default function Home() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function Home() {
           className="p-3 sm:p-4 lg:p-5 text-base sm:text-lg lg:text-xl bg-teacher"
           onClick={() => {
             setRole("teacher");
+            setCookies("teacher");
             router.push("/teacher/auth/login");
           }}
         >
@@ -30,6 +32,7 @@ export default function Home() {
           className="p-3 sm:p-4 lg:p-5 text-base sm:text-lg lg:text-xl bg-student"
           onClick={() => {
             setRole("student");
+            setCookies("student");
             router.push("/student/auth/login");
           }}
         >
@@ -39,6 +42,7 @@ export default function Home() {
           className="p-3 sm:p-4 lg:p-5 text-base sm:text-lg lg:text-xl bg-parents"
           onClick={() => {
             setRole("parents");
+            setCookies("parents");
             router.push("/parents/auth/login");
           }}
         >

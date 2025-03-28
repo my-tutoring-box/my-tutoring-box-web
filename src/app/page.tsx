@@ -18,8 +18,18 @@ export default function Home() {
         >
           선생님
         </Button>
-        <Button className="text-xl p-5 bg-student">학생</Button>
-        <Button className="text-xl p-5 bg-parents">학부모</Button>
+        <Button
+          className="text-xl p-5 bg-student"
+          onClick={() => router.push("/student/auth/login")}
+        >
+          학생
+        </Button>
+        <Button
+          className="text-xl p-5 bg-parents"
+          onClick={() => router.push("/parents/auth/login")}
+        >
+          학부모
+        </Button>
       </div>
     </div>
   );

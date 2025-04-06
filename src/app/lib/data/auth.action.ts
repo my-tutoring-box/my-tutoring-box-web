@@ -1,5 +1,6 @@
 "use server";
 import { post } from "@/app/lib/data/fetcher";
+import { User } from "@/app/types/user.type";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
 
@@ -18,11 +19,20 @@ export async function register(data: FormData) {
   const password =
     data.get("password") ?? `${data.get("code") ?? ""}${role ?? ""}`;
 
-  await post("/auth/register", {
+  const response = await post<User>("/auth/register", {
     email,
     password,
     role,
   });
 
-  await redirect("/", RedirectType.replace);
+  const user = response.data;
+  if (user?.studentId) {
+    const cookie = await cookies();
+    cookie.set("studentId", user.studentId, {
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+      sameSite: "lax",
+    });
+  }
+
+  await redirect(`${role}/main`, RedirectType.replace);
 }

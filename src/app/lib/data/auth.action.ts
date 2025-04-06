@@ -34,5 +34,5 @@ export async function register(data: FormData) {
     });
   }
 
-  await redirect(`${role}/main`, RedirectType.replace);
+  await redirect(`/${role}/main`, RedirectType.replace);
 }

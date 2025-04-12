@@ -8,3 +8,9 @@ export interface Summary {
   name: string;
   cycle: number;
 }
+
+export interface Calendar {
+  id: string;
+  date: Date;
+  count: number;
+}

@@ -3,7 +3,7 @@
 import { getCalenders, getLesson } from "@/app/lib/data/lesson.action";
 import { Calendar, Lesson } from "@/app/types/lesson.type";
 import DateBadgeList from "@/components/main/date-badge-list";
-import LessonInfo from "@/components/main/lesson-info";
+import StudentLessonInfo from "@/components/main/student-lesson-info";
 import { format, isAfter } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useEffect, useState } from "react";
@@ -53,7 +53,7 @@ export default function Page() {
       </div>
       {lesson && (
         <div className="w-full max-w-lg mt-8">
-          <LessonInfo lesson={lesson} />
+          <StudentLessonInfo lesson={lesson} />
         </div>
       )}
     </div>

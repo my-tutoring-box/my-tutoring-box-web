@@ -7,7 +7,7 @@ type Props = {
   lesson: Lesson;
 };
 
-export default function LessonInfo({ lesson }: Props) {
+export default function StudentLessonInfo({ lesson }: Props) {
   const hasHomework = lesson.homework && lesson.homework.length > 0;
 
   return (

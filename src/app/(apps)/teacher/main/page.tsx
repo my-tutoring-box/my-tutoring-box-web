@@ -13,7 +13,6 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getCalenders();
-      console.log(data);
       if (!data) return;
 
       setAllDates(data);

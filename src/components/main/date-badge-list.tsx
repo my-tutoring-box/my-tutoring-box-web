@@ -19,7 +19,7 @@ export default function DateBadgeList({
 
         return (
           <div
-            key={item.id}
+            key={item._id}
             className={`px-3 py-1 rounded-md text-sm font-semibold ${
               isNext ? "bg-red-500 text-white" : "bg-blue-100 text-blue-900"
             }`}

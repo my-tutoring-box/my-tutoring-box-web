@@ -1,5 +1,6 @@
 type lesson = { date: string; content: string };
 type account = { bank: string; accountNumber: string };
+type homework = { _id: string; text: string; complete: number };
 
 export interface Summary {
   data: lesson[];
@@ -10,7 +11,15 @@ export interface Summary {
 }
 
 export interface Calendar {
-  id: string;
+  _id: string;
   date: Date;
   count: number;
+}
+
+export interface Lesson {
+  _id: string;
+  content: string;
+  homework: homework[];
+  calendarId: string;
+  studentId: string;
 }

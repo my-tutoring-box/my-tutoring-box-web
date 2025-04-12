@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { get } from "./fetcher";
-import { Calendar, Summary } from "@/app/types/lesson.type";
+import { Calendar, Lesson, Summary } from "@/app/types/lesson.type";
 
 export async function getSummary() {
   const cookieStore = await cookies();
@@ -23,6 +23,18 @@ export async function getCalenders() {
 
   if (response.status === "success") {
     return response.data as Calendar[];
+  } else {
+    return null;
+  }
+}
+
+export async function getLesson() {
+  const cookieStore = await cookies();
+  const studentId = cookieStore.get("studentId")?.value ?? "";
+  const response = await get(`${studentId}/lessons`);
+
+  if (response.status === "success") {
+    return response.data as Lesson;
   } else {
     return null;
   }

@@ -13,7 +13,6 @@ export async function setCookies(role: string) {
 }
 
 export async function register(data: FormData) {
-  console.log(data);
   const role = data.get("role") as string;
   const email = data.get("email") ?? `${data.get("code") ?? ""}${role ?? ""}`;
   const password =

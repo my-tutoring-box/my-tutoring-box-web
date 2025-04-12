@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { get } from "./fetcher";
+import { get, patch } from "./fetcher";
 import { Calendar, Lesson, Summary } from "@/app/types/lesson.type";
 
 export async function getSummary() {
@@ -32,6 +32,24 @@ export async function getLesson() {
   const cookieStore = await cookies();
   const studentId = cookieStore.get("studentId")?.value ?? "";
   const response = await get(`${studentId}/lessons`);
+
+  if (response.status === "success") {
+    return response.data as Lesson;
+  } else {
+    return null;
+  }
+}
+
+export async function setHomeworkComplete(
+  lessonId: string,
+  homeworkId: string
+) {
+  const cookieStore = await cookies();
+  const studentId = cookieStore.get("studentId")?.value ?? "";
+  const response = await patch(
+    `${studentId}/lessons/${lessonId}/homeworks/${homeworkId}`,
+    {}
+  );
 
   if (response.status === "success") {
     return response.data as Lesson;

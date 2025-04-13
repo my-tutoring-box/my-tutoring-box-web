@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { get, patch } from "./fetcher";
-import { Calendar, Lesson, Summary } from "@/app/types/lesson.type";
+import { Calendar, Lesson, LessonBody, Summary } from "@/app/types/lesson.type";
 
 export async function getSummary() {
   const cookieStore = await cookies();
@@ -50,6 +50,18 @@ export async function setHomeworkComplete(
     `${studentId}/lessons/${lessonId}/homeworks/${homeworkId}`,
     {}
   );
+
+  if (response.status === "success") {
+    return response.data as Lesson;
+  } else {
+    return null;
+  }
+}
+
+export async function setLesson(lessonId: string, body: LessonBody) {
+  const cookieStore = await cookies();
+  const studentId = cookieStore.get("studentId")?.value ?? "";
+  const response = await patch(`${studentId}/lessons/${lessonId}`, body);
 
   if (response.status === "success") {
     return response.data as Lesson;

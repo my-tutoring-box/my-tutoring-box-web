@@ -1,47 +1,36 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { getStudents } from "@/app/lib/data/student.action";
 import { Student } from "@/app/types/student.type";
-import StudentDetail from "@/components/main/student-detail";
+import { useRouter } from "next/navigation";
 import StudentList from "@/components/main/student-list";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
 
-export default function Page() {
+export default function MainPage() {
   const [students, setStudents] = useState<Student[]>([]);
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const students = await getStudents();
-      setStudents(students);
+    const fetch = async () => {
+      const data = await getStudents();
+      setStudents(data);
     };
-
-    fetchData();
+    fetch();
   }, []);
 
   return (
     <div className="px-6 py-8">
       <div className="flex justify-end mb-4">
-        {!selectedStudent && (
-          <Button>
-            <Plus />
-          </Button>
-        )}
+        <Button>
+          <Plus />
+        </Button>
       </div>
-
-      {!selectedStudent ? (
-        <StudentList
-          students={students}
-          onCardClick={(student) => setSelectedStudent(student)}
-        />
-      ) : (
-        <StudentDetail
-          studentId={selectedStudent._id}
-          onBack={() => setSelectedStudent(null)}
-        />
-      )}
+      <StudentList
+        students={students}
+        onCardClick={(student) => router.push(`/teacher/main/${student._id}`)}
+      />
     </div>
   );
 }

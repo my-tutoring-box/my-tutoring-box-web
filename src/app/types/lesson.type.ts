@@ -1,6 +1,6 @@
 type lesson = { date: string; content: string };
 type account = { bank: string; accountNumber: string };
-type homework = { _id: string; text: string; complete: number };
+type homework = { _id?: string; text: string; complete: number };
 
 export interface Summary {
   data: lesson[];
@@ -22,4 +22,9 @@ export interface Lesson {
   homework: homework[];
   calendarId: string;
   studentId: string;
+}
+
+export interface LessonBody {
+  content: string;
+  homework: homework[];
 }

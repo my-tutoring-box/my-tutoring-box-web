@@ -22,7 +22,7 @@ export default function StudentLessonInfo({ lesson }: Props) {
               checked={hw.complete === 1}
               className="border-blue-400 bg-blue-200"
               onCheckedChange={async () => {
-                await setHomeworkComplete(lesson._id, hw._id);
+                await setHomeworkComplete(lesson._id, hw._id ?? "");
                 window.location.reload();
               }}
             />

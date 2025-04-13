@@ -3,12 +3,15 @@
 import { getCalendars, getLesson } from "@/app/lib/data/lesson.action";
 import { Calendar, Lesson } from "@/app/types/lesson.type";
 import DateBadgeList from "@/components/main/date-badge-list";
-import StudentLessonInfo from "@/components/main/student-lesson-info";
+import TeacherLessonInfo from "@/components/main/teacher-lesson-info";
 import { format, isAfter } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
+  const { studentId } = useParams();
+
   const [nextClass, setNextClass] = useState<Calendar | null>(null);
   const [nextClassSession, setNextClassSession] = useState<number | null>(null);
   const [allDates, setAllDates] = useState<Calendar[]>([]);
@@ -16,8 +19,9 @@ export default function Page() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // set calendars
-      const data = await getCalendars();
+      if (!studentId || typeof studentId !== "string") return null;
+
+      const data = await getCalendars(studentId);
       if (!data) return;
 
       setAllDates(data);
@@ -30,13 +34,12 @@ export default function Page() {
         setNextClassSession(futureIndex + 1);
       }
 
-      // set lessons
-      const lesson = await getLesson();
+      const lesson = await getLesson(studentId);
       setLesson(lesson);
     };
 
     fetchData();
-  }, []);
+  }, [studentId]);
 
   return (
     <div className="flex flex-col items-center justify-start p-6 md:p-10">
@@ -53,7 +56,7 @@ export default function Page() {
       </div>
       {lesson && (
         <div className="w-full max-w-lg mt-8">
-          <StudentLessonInfo lesson={lesson} />
+          <TeacherLessonInfo lesson={lesson} />
         </div>
       )}
     </div>

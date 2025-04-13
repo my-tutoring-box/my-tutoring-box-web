@@ -1,36 +1,32 @@
 "use client";
 
-import { getCalenders } from "@/app/lib/data/lesson.action";
-import { Calendar } from "@/app/types/lesson.type";
-import DateBadgeList from "@/components/main/date-badge-list";
-import { isAfter } from "date-fns";
+import { getStudents } from "@/app/lib/data/student.action";
+import { Student } from "@/app/types/student.type";
+import StudentList from "@/components/main/student-list";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Page() {
-  const [nextClass, setNextClass] = useState<Calendar | null>(null);
-  const [allDates, setAllDates] = useState<Calendar[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getCalenders();
-      if (!data) return;
-
-      setAllDates(data);
-
-      const now = new Date();
-      const futureDates = data.filter((item) => isAfter(item.date, now));
-
-      if (futureDates.length > 0) {
-        setNextClass(futureDates[0]);
-      }
+      const students = await getStudents();
+      setStudents(students);
     };
 
     fetchData();
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-start p-6 md:p-10">
-      <DateBadgeList allDates={allDates} nextClass={nextClass} />
+    <div className="px-6 py-8">
+      <div className="flex justify-end mb-4">
+        <Button>
+          <Plus />
+        </Button>
+      </div>
+      <StudentList students={students} />
     </div>
   );
 }

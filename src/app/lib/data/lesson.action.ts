@@ -16,7 +16,7 @@ export async function getSummary() {
   }
 }
 
-export async function getCalenders(studentId?: string) {
+export async function getCalendars(studentId?: string) {
   const cookieStore = await cookies();
   studentId = studentId ? studentId : cookieStore.get("studentId")?.value ?? "";
   const response = await get(`students/${studentId}/calendars`);

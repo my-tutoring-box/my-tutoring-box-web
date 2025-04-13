@@ -33,5 +33,25 @@ export async function register(data: FormData) {
     });
   }
 
-  await redirect(`/${role}/main`, RedirectType.replace);
+  if (role === "teacher")
+    await redirect(`/teacher/auth/login`, RedirectType.replace);
+  else await redirect(`/${role}/main`, RedirectType.replace);
+}
+
+export async function login(data: FormData) {
+  const response = await post<User>("/auth/login", {
+    email: data.get("email"),
+    password: data.get("password"),
+  });
+
+  const user = response.data;
+  if (user?.studentId) {
+    const cookie = await cookies();
+    cookie.set("studentId", user.studentId, {
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+      sameSite: "lax",
+    });
+  }
+
+  await redirect(`/teacher/main`, RedirectType.replace);
 }

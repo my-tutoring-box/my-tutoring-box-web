@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { login } from "@/app/lib/data/auth.action";
 
 export function LoginForm({
   className,
@@ -22,7 +23,7 @@ export function LoginForm({
           <CardDescription>이메일을 통해 계정에 로그인하세요.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form action={login}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">이메일</Label>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getStudents } from "@/app/lib/data/student.action";
+import { getStudents, setStudentId } from "@/app/lib/data/student.action";
 import { Student } from "@/app/types/student.type";
 import { useRouter, useSearchParams } from "next/navigation";
 import StudentList from "@/components/main/student-list";
@@ -15,6 +15,7 @@ export default function MainPage() {
   const router = useRouter();
 
   const showForm = searchParams.get("add") === "1";
+  const refresh = searchParams.get("refresh") === "1";
 
   useEffect(() => {
     const fetch = async () => {
@@ -22,7 +23,13 @@ export default function MainPage() {
       setStudents(data);
     };
     fetch();
-  }, []);
+  }, [refresh]);
+
+  useEffect(() => {
+    if (refresh) {
+      router.replace("/teacher/main");
+    }
+  }, [refresh]);
 
   return (
     <div className="px-6 py-8">
@@ -37,7 +44,10 @@ export default function MainPage() {
       ) : (
         <StudentList
           students={students}
-          onCardClick={(student) => router.push(`/teacher/main/${student._id}`)}
+          onCardClick={async (student) => {
+            await setStudentId(student._id);
+            router.push(`/teacher/main/${student._id}`);
+          }}
         />
       )}
     </div>

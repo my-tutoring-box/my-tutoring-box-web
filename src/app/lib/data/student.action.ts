@@ -2,7 +2,17 @@
 
 import { Student } from "@/app/types/student.type";
 import { get, post } from "./fetcher";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+
+export async function setStudentId(studentId: string) {
+  const cookie = await cookies();
+  cookie.set("studentId", studentId, {
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+    sameSite: "lax",
+  });
+}
 
 export async function getStudents() {
   const response = await get("students");
@@ -38,5 +48,6 @@ export async function addStudent(formData: FormData) {
   };
 
   await post("students", student);
-  await revalidatePath("/teacher/main");
+  revalidatePath("/teacher/main");
+  redirect("/teacher/main?refresh=1");
 }

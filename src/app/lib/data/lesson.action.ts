@@ -16,9 +16,9 @@ export async function getSummary() {
   }
 }
 
-export async function getCalenders() {
+export async function getCalenders(studentId?: string) {
   const cookieStore = await cookies();
-  const studentId = cookieStore.get("studentId")?.value ?? "";
+  studentId = studentId ? studentId : cookieStore.get("studentId")?.value ?? "";
   const response = await get(`students/${studentId}/calendars`);
 
   if (response.status === "success") {
@@ -28,9 +28,9 @@ export async function getCalenders() {
   }
 }
 
-export async function getLesson() {
+export async function getLesson(studentId?: string) {
   const cookieStore = await cookies();
-  const studentId = cookieStore.get("studentId")?.value ?? "";
+  studentId = studentId ? studentId : cookieStore.get("studentId")?.value ?? "";
   const response = await get(`${studentId}/lessons`);
 
   if (response.status === "success") {

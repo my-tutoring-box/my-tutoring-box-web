@@ -4,12 +4,14 @@ import { getCalendars, getLesson } from "@/app/lib/data/lesson.action";
 import { Calendar, Lesson } from "@/app/types/lesson.type";
 import DateBadgeList from "@/components/main/date-badge-list";
 import TeacherLessonInfo from "@/components/main/teacher-lesson-info";
+import { Button } from "@/components/ui/button";
 import { format, isAfter } from "date-fns";
 import { ko } from "date-fns/locale";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
+  const router = useRouter();
   const { studentId } = useParams();
 
   const [nextClass, setNextClass] = useState<Calendar | null>(null);
@@ -43,7 +45,20 @@ export default function Page() {
 
   return (
     <div className="flex flex-col items-center justify-start p-6 md:p-10">
-      <DateBadgeList allDates={allDates} nextClass={nextClass} />
+      <div className="relative w-full flex items-center justify-center">
+        <div className="flex gap-2">
+          <DateBadgeList allDates={allDates} nextClass={nextClass} />
+        </div>
+        <div className="absolute right-4">
+          <Button
+            className="bg-blue-100 text-blue-900 font-bold"
+            onClick={() => router.push("/teacher/main/ml")}
+          >
+            학생 유형 분류
+          </Button>
+        </div>
+      </div>
+
       <div className="flex fle-row gap-5 text-center text-2xl font-bold mt-4">
         <p className="mb-2">
           &lt;{nextClassSession}/{allDates.length} 일 째!&gt;

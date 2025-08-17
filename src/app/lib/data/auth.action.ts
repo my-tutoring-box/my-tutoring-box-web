@@ -39,10 +39,11 @@ export async function register(data: FormData) {
 }
 
 export async function login(data: FormData) {
-  await post<User>("/auth/login", {
+  const response = await post<User>("/auth/login", {
     email: data.get("email"),
     password: data.get("password"),
   });
 
-  await redirect(`/teacher/main`, RedirectType.replace);
+  if (response.data != null)
+    await redirect(`/teacher/main`, RedirectType.replace);
 }

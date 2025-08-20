@@ -18,20 +18,11 @@ export async function register(data: FormData) {
   const password =
     data.get("password") ?? `${data.get("code") ?? ""}${role ?? ""}`;
 
-  const response = await post<User>("/auth/register", {
+  await post<User>("/auth/register", {
     email,
     password,
     role,
   });
-
-  const user = response.data;
-  if (user?.studentId) {
-    const cookie = await cookies();
-    cookie.set("studentId", user.studentId, {
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
-      sameSite: "lax",
-    });
-  }
 
   if (role === "teacher")
     await redirect(`/teacher/auth/login`, RedirectType.replace);
@@ -44,6 +35,22 @@ export async function login(data: FormData) {
     password: data.get("password"),
   });
 
-  if (response.data != null)
+  if (response.data != null) {
+    const user = response.data;
+    if (user?.studentId) {
+      const cookie = await cookies();
+      cookie.set("studentId", user.studentId, {
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+        sameSite: "lax",
+      });
+    }
+    if (user?.id) {
+      const cookie = await cookies();
+      cookie.set("userId", user.id, {
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+        sameSite: "lax",
+      });
+    }
     await redirect(`/teacher/main`, RedirectType.replace);
+  }
 }

@@ -45,11 +45,13 @@ export default function Page() {
 
   return (
     <div className="flex flex-col items-center justify-start p-6 md:p-10">
-      <div className="relative w-full flex items-center justify-center">
-        <div className="flex gap-2">
-          <DateBadgeList allDates={allDates} nextClass={nextClass} />
+      <div className="w-full flex flex-col">
+        <div className="flex justify-center">
+          <div className="flex gap-4">
+            <DateBadgeList allDates={allDates} nextClass={nextClass} />
+          </div>
         </div>
-        <div className="absolute right-4">
+        <div className="flex justify-end">
           <Button
             className="bg-blue-100 text-blue-900 font-bold"
             onClick={() => router.push("/teacher/main/ml")}

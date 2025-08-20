@@ -18,11 +18,21 @@ export async function register(data: FormData) {
   const password =
     data.get("password") ?? `${data.get("code") ?? ""}${role ?? ""}`;
 
-  await post<User>("/auth/register", {
+  const response = await post<User>("/auth/register", {
     email,
     password,
     role,
   });
+
+  // 학생, 학부모 정보 불러오기 위해 studentId 쿠키 세팅
+  const user = response.data;
+  if (user?.studentId) {
+    const cookie = await cookies();
+    cookie.set("studentId", user.studentId, {
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+      sameSite: "lax",
+    });
+  }
 
   if (role === "teacher")
     await redirect(`/teacher/auth/login`, RedirectType.replace);
@@ -37,13 +47,6 @@ export async function login(data: FormData) {
 
   if (response.data != null) {
     const user = response.data;
-    if (user?.studentId) {
-      const cookie = await cookies();
-      cookie.set("studentId", user.studentId, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
-        sameSite: "lax",
-      });
-    }
     if (user?.id) {
       const cookie = await cookies();
       cookie.set("userId", user.id, {

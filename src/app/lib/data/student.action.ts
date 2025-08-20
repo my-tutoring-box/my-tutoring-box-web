@@ -15,7 +15,10 @@ export async function setStudentId(studentId: string) {
 }
 
 export async function getStudents() {
-  const response = await get("students");
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("userId")?.value ?? "";
+  const response = await get(`students/${userId}/students`);
+
   if (response.status === "success") {
     return response.data as Student[];
   } else {

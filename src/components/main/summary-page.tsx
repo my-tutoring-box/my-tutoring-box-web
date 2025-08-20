@@ -16,24 +16,42 @@ type CardProps = React.ComponentProps<typeof Card>;
 
 export function SummaryPage({ className, ...props }: CardProps) {
   const [summary, setSummary] = useState<Summary | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const res = await getSummary();
       setSummary(res);
+      setLoading(false);
     })();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center w-full min-h-[400px]">
+        로딩 중...
+      </div>
+    );
+  }
+
+  if (!summary || summary.data.length === 0) {
+    return (
+      <div className="flex items-center justify-center w-full min-h-[400px]">
+        선생님께서 수업 정보를 추가하지 않았습니다.
+      </div>
+    );
+  }
 
   return (
     <Card className={cn("w-[500px]", className)} {...props}>
       <CardHeader>
         <CardTitle className="text-center text-2xl">
-          {summary?.name} 제 {summary?.cycle}회 가정통신문
+          {summary.name} 제 {summary.cycle}회 가정통신문
         </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div>
-          {summary?.data.map((d, index) => (
+          {summary.data.map((d, index) => (
             <div
               key={index}
               className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
@@ -54,15 +72,15 @@ export function SummaryPage({ className, ...props }: CardProps) {
           <p className="mt-2 mb-1">한달 과외가 끝났습니다.</p>
           <p className="mb-1">
             <strong>
-              {summary?.account.bank} {summary?.account.accountNumber}
+              {summary.account.bank} {summary.account.accountNumber}
             </strong>
-            로 수업료 <strong>{summary?.fee?.toLocaleString()}원</strong> 지급
+            로 수업료 <strong>{summary.fee.toLocaleString()}원</strong> 지급
             부탁드립니다.
           </p>
           <p> 감사합니다.</p>
         </div>
         <strong className="text-lg mt-4">
-          {summary?.data[summary.data.length - 1].date}
+          {summary.data[summary.data.length - 1].date}
         </strong>
       </CardFooter>
     </Card>

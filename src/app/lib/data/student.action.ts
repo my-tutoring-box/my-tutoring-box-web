@@ -25,8 +25,11 @@ export async function getStudents() {
 
 export async function addStudent(formData: FormData) {
   const time = formData.getAll("time") as string[];
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("userId")?.value ?? "";
 
   const student = {
+    userId: userId,
     name: formData.get("name")?.toString() || "",
     schoolLevel: formData.get("schoolLevel")?.toString() || "",
     grade: formData.get("grade")?.toString() || "",

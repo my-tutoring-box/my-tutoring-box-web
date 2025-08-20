@@ -20,7 +20,9 @@ jobs:
 
       # 3. Docker 이미지 빌드 & 푸시
       - run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/front:latest .
+          docker build \
+            --build-arg NEXT_PUBLIC_API_URL=http://54.252.225.141:3000 \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/front:latest .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/front:latest
 
       # 4. 서비스 레포와 배포 레포 연결
